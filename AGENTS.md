@@ -43,7 +43,8 @@ bash {SKILL_DIR}/scripts/arch-review.sh --project {PROJECT_PATH} --mode <MODE>
 
 - 合并脚本结果 + AI 分析结果
 - 健康度评分：100 - (BLOCKER × 5) - (MAJOR × 2) - (MINOR × 1)
-- 按 BLOCKER → MAJOR → MINOR 排序输出
+- **默认输出摘要报告**（评分 + BLOCKER/MAJOR 列表 + 建议），不打印原始 JSON，不逐项叙述分析过程
+- 用户说"详细"时才输出完整报告
 
 ## 参考文档
 

@@ -84,7 +84,46 @@ bash {SKILL_DIR}/scripts/arch-review.sh --project {PROJECT_PATH} --mode {MODE}
 2. 计算健康度评分：100 - (BLOCKER × 5) - (MAJOR × 2) - (MINOR × 1)
 3. 按 BLOCKER → MAJOR → MINOR 排序输出
 
-报告模板：
+## 输出纪律
+
+**必须严格遵守以下规则，控制输出量：**
+
+1. **不要打印脚本的原始 JSON 输出** — 解析后直接用于报告，不展示给用户
+2. **不要逐项叙述分析过程** — 不要输出"我正在检查 XXX..."、"发现 XXX 可能有问题..."等中间过程
+3. **默认使用摘要报告** — 除非用户明确要求"详细"、"完整报告"、"detail"
+4. **MINOR 问题默认折叠** — 摘要模式下仅列出 MINOR 的数量，不展开每一项
+
+## 报告模板
+
+### 默认：摘要报告
+
+```markdown
+# 架构审查报告
+
+**健康度: XX/100** | BLOCKER: X | MAJOR: X | MINOR: X
+
+## BLOCKER（必须修复）
+
+1. **[检查项名称]** `文件路径:行号`
+   问题: 一句话说明
+   建议: 一句话修复方案
+
+2. ...
+
+## MAJOR（建议修复）
+
+1. **[检查项名称]** `文件路径:行号`
+   问题: 一句话说明
+
+2. ...
+
+> MINOR 问题共 X 项，输入"展开 MINOR"查看详情。
+
+## 建议
+1. 最关键的改进方向（1-3 条）
+```
+
+### 用户要求"详细"时：完整报告
 
 ```markdown
 # Java 服务端设计架构审查报告
@@ -95,8 +134,6 @@ bash {SKILL_DIR}/scripts/arch-review.sh --project {PROJECT_PATH} --mode {MODE}
 - 审查范围: [全量扫描 / 增量扫描 / 指定模块]
 
 ## 健康度评分: XX/100
-
-计算规则: 100 - (BLOCKER × 5) - (MAJOR × 2) - (MINOR × 1)
 
 ## 审查结果统计
 | 等级 | 数量 |
@@ -112,10 +149,10 @@ bash {SKILL_DIR}/scripts/arch-review.sh --project {PROJECT_PATH} --mode {MODE}
 建议: 修复方案及代码示例
 
 ## MAJOR 问题（强烈建议修复）
-...
+（同上格式逐项列出）
 
 ## MINOR 问题（建议优化）
-...
+（同上格式逐项列出）
 
 ## 总结与建议
 [1-3 条最关键的改进方向]
